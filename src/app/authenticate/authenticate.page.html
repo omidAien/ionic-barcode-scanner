@@ -1,0 +1,70 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center" >{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+
+  <app-preloader></app-preloader>
+
+  <div class="map-login-page" *ngIf=" !(loadingService.loading$ | async) " [dir]=" pageDirection " >
+
+    <div class="content-container">
+
+        <div class="form-container-base form-container">
+
+            <div class="form-header">
+                <div class="form-header-logo">
+                    <img src="../../assets/images/Narmafzar 256 x 256 px.ico" alt="logo">
+                </div>
+                <div class="form-header-title">
+                    <span> {{ Caption }} </span>
+                </div>
+            </div>
+
+            <div class="form-content">
+
+              <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
+
+                <ion-item>
+                  <ion-label position="floating">نام کاربری</ion-label>
+                  <ion-input type="text" formControlName="username" ></ion-input>
+                </ion-item>
+
+                <ion-item style="font-size: 12px;">
+                  <ion-label position="floating">رمز عبور</ion-label>
+                  <ion-input type="password" formControlName="password" ></ion-input>
+                </ion-item>
+
+                <div class="form-operation">
+                  <ion-button type="submit" color="primary">وررد به حساب کاربری</ion-button>
+                
+                  <div class="form-remember" *ngIf=" !remmeberMeIsChecked ">
+                    <ion-checkbox slot="start" color="secondary" #remmeberMe></ion-checkbox>
+                    <ion-label>مرا به خاطر نگه‌دار</ion-label>
+                  </div>
+
+                </div>
+
+               </form> 
+              
+            </div>
+
+        </div>
+
+        <div class="img-container-base img-container"></div>
+
+        <div class="footer-container">
+            <a href="https://www.mabanipardaz.com/" target="_blank" class="company-name-base company-name" >{{ PoweredBy }}</a>
+            <span class="footer-seprator">|</span>
+            <span class="app-version" >نسخه {{ appVersion }}</span>
+            <span class="footer-seprator">|</span>
+            <span class="release-date">{{ ReleaseDate }} </span>
+        </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

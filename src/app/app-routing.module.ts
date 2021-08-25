@@ -1,14 +1,22 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './services/auth.guard';
+import { IsLoginGuard } from './services/is-login.guard';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    path: 'login',
+    loadChildren: () => import('./authenticate/authenticate.module').then( m => m.AuthenticatePageModule),
+    canActivate: [IsLoginGuard]
+  },
+  {
+    path: 'barcode',
+    loadChildren: () => import('./barcode/barcode.module').then( m => m.BarcodePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
 ];
