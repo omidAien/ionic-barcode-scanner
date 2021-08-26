@@ -37,6 +37,7 @@ export class AuthenticatePage implements OnInit {
   ngOnInit() {
 
     this.clientInformation = JSON.parse(this.cookieService.get("clientInformation"));
+    this.remmeberMeIsChecked = JSON.parse(localStorage.getItem("remmeberMe"));
 
     const systemInformation$: Observable<SystemInformation> = this.globalAPIService.getSystemInformation();
     const systemInformation: (SystemInformation | null) = JSON.parse(sessionStorage.getItem("SystemInformation"));
@@ -76,7 +77,7 @@ export class AuthenticatePage implements OnInit {
       password: new FormControl(localStorage.getItem("password")),
     });
 
-    this.remmeberMeIsChecked = JSON.parse(localStorage.getItem("remmeberMe"));
+    
 
   }
 
