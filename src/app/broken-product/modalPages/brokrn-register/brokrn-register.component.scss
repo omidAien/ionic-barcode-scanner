@@ -1,0 +1,14 @@
+/* Set the width to the full container and center the content */
+ion-select {
+  width: 100%;
+  font-size: 12px;
+  flex-direction: row-reverse;
+}
+
+ion-select::part(placeholder) {
+  text-align: right;
+}
+
+ion-select::part(text) {
+  text-align: right;
+}

@@ -109,7 +109,7 @@ export class AuthenticatePage implements OnInit {
                 const token: string = authenticateResponse.Token;
                 this.cookieService.set("token", JSON.stringify(authenticateResponse.Token));
                 this.saveToSessionStorage("userLogin", JSON.stringify(true));
-                this.router.navigateByUrl("/barcode");
+                this.router.navigateByUrl("/main");
 
               }
               else {

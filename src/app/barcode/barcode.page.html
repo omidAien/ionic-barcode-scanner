@@ -1,6 +1,9 @@
-<ion-header>
+<ion-header> 
   <ion-toolbar color="secondary">
-    <ion-title class="ion-text-center" >{{ Caption }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/main"></ion-back-button>
+    </ion-buttons>
+    <ion-title slot="end" >{{ title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,7 +19,7 @@
 <ion-footer>
   <ion-toolbar>
 
-    <ion-button class="ion-padding-horizontal" slot="start" size="default" color="warning" (click)="logOut()">خروج</ion-button>
+    <!-- <ion-button class="ion-padding-horizontal" slot="start" size="default" color="warning" (click)="logOut()">خروج</ion-button> -->
     <ion-button class="ion-padding-horizontal" slot="start" size="default" (click)="sendToServer()" >ارسال</ion-button>
 
     <div class="number-stuff-container">

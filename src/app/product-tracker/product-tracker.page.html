@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/main"></ion-back-button>
+    </ion-buttons>
+    <ion-title slot="end" >{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="barcode-container ion-padding">
+    <ion-label>{{ barcodeContainerLabel }}</ion-label>
+    <ion-input #barcode></ion-input>
+  </div>
+
+
+  <ion-list>
+
+    <ion-item>
+      <div class="product-attribute-container">
+        <div class="product-attribute-label">
+          <span>نام</span>
+        </div>
+        <div class="product-attribute-description">
+          <span>شیشه شماره 5</span>
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <div class="product-attribute-container">
+        <div class="product-attribute-label">
+          <span>شماره شناسه</span>
+        </div>
+        <div class="product-attribute-description">
+          <span>123456789</span>
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <div class="product-attribute-container">
+        <div class="product-attribute-label">
+          <span>تولید کننده</span>
+        </div>
+        <div class="product-attribute-description">
+          <span>شیشه ایلیا</span>
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <div class="product-attribute-container">
+        <div class="product-attribute-label">
+          <span>توضیحات</span>
+        </div>
+        <div class="product-attribute-description">
+          <span>در حال حاضر در زمانه‌ای هستیم که تولید محتوا در تمامی کسب‌و‌کارها حرف اول را می‌زند</span>
+        </div>
+      </div>
+    </ion-item>
+
+
+
+  </ion-list>
+
+
+</ion-content>

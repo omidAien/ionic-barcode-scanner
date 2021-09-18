@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-icon size="large" name="close-outline" (click)="dismiss()" class="ion-padding"></ion-icon>
+    <ion-title slot="end" >{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label class="ion-text-right ion-padding">
+        مسئول
+      </ion-label>
+    </ion-list-header>
+  
+    <ion-item>
+      <ion-select placeholder="مسئول" ok-text="انتخاب" cancel-text="انصراف">
+        <ion-select-option value="f">آقای امیری</ion-select-option>
+        <ion-select-option value="m">آقای آیینه</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label class="ion-text-right ion-padding">
+        علت شکست
+      </ion-label>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-select placeholder="علت شکست" ok-text="انتخاب" cancel-text="انصراف">
+        <ion-select-option value="LiftTruck">برخورد با لیفتراک</ion-select-option>
+        <ion-select-option value="HumanError">خطای انسانی</ion-select-option>
+        <ion-select-option value="Transportation">حمل و نقل</ion-select-option>
+      </ion-select>
+    </ion-item>
+  
+  </ion-list>
+
+  <ion-button class="ion-padding" shape="round" fill="solid" expand="block" color="success">ثبت</ion-button>
+
+</ion-content>
