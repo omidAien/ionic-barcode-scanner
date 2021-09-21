@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button text="" defaultHref="/main"></ion-back-button>
+      <ion-back-button text="" defaultHref="/main" (click)="onClickBackButton()"></ion-back-button>
     </ion-buttons>
     <ion-title slot="end" >{{ title }}</ion-title>
   </ion-toolbar>
@@ -11,7 +11,7 @@
 
   <div class="barcode-container ion-padding">
     <ion-label>{{ barcodeContainerLabel }}</ion-label>
-    <ion-input #barcode></ion-input>
+    <ion-input #barcode (ionChange)="changeInputBarcode()"></ion-input>
   </div>
 
 

@@ -25,7 +25,12 @@ export class MainPage implements OnInit {
         break;
 
       case 'brokenProduct':
-        this.router.navigateByUrl('/broken-product', { state : { title: 'ثبت شکست' } })
+        this.router.navigateByUrl('/broken-product', { state : { title: 'ثبت شکست' } });
+        break;
+
+      case 'printLabel':
+        this.router.navigateByUrl('/print-label', { state : { title: 'چاپ لیبل' } });
+        break;   
 
     }
 

@@ -4,30 +4,33 @@ import { IonInput } from '@ionic/angular';
 import { BarcodeReaderService } from '../services/barcode-reader.service';
 
 @Component({
-  selector: 'app-product-tracker',
-  templateUrl: './product-tracker.page.html',
-  styleUrls: ['./product-tracker.page.scss'],
+  selector: 'app-print-label',
+  templateUrl: './print-label.page.html',
+  styleUrls: ['./print-label.page.scss'],
 })
-export class ProductTrackerPage implements OnInit, AfterViewInit {
+export class PrintLabelPage implements OnInit, AfterViewInit {
 
   @ViewChild('barcode') barcode: IonInput;
 
   title:string;
   barcodeContainerLabel:string = "بارکد";
-  
-  constructor(private router: Router,
-              public barcodeReaderService: BarcodeReaderService) { 
 
-    try {     
+  constructor(private router: Router, public barcodeReaderService: BarcodeReaderService,) { 
+
+    try {
+      
       this.title = this.router.getCurrentNavigation().extras.state.title;
-    } 
-    catch (error) {
+
+    } catch (error) {
+      
       this.router.navigateByUrl("/main");
-    };
+
+    }
 
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   focusOnBarcodeInputElement() {
     setTimeout(() => {
@@ -38,6 +41,14 @@ export class ProductTrackerPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     this.focusOnBarcodeInputElement();
+  }
+
+  ngAfterViewInit() {
+    this.barcode.readonly = true;
+  }
+
+  onClickBackButton() {
+    this.barcodeReaderService.setBarcode(null);
   }
 
   changeInputBarcode() {
@@ -58,14 +69,6 @@ export class ProductTrackerPage implements OnInit, AfterViewInit {
 
     }
 
-  }
-
-  onClickBackButton() {
-    this.barcodeReaderService.setBarcode(null);
-  }
-
-  ngAfterViewInit() {
-    this.barcode.readonly = true;
   }
 
 }

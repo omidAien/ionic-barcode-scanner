@@ -1,7 +1,10 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonInput } from '@ionic/angular';
+import { AlertController, IonInput } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
+import { BehaviorSubject, from, noop, of } from 'rxjs';
+import { delay, finalize, tap } from 'rxjs/operators';
+import { BarcodeReaderService } from '../services/barcode-reader.service';
 import { BrokrnRegisterComponent } from './modalPages/brokrn-register/brokrn-register.component';
 
 @Component({
@@ -16,22 +19,21 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
   barcodeContainerLabel:string = "بارکد";
   title:string;
 
-  constructor(private router: Router, public modalController: ModalController) {
+  constructor(private router: Router, 
+              public barcodeReaderService: BarcodeReaderService,
+              public alertController: AlertController,
+              public modalController: ModalController) {
 
     try {
-
       this.title = this.router.getCurrentNavigation().extras.state.title;
-      
-    } catch (error) {
-      
+    } 
+    catch (error) {
       this.router.navigateByUrl("/main");
-
     }
 
    }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   focusOnBarcodeInputElement() {
     setTimeout(() => {
@@ -44,28 +46,81 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
     this.focusOnBarcodeInputElement();
   }
 
-  sendToServer() {
-
-    // first action
-    this.barcode.value = "";
-    this.barcode.readonly = true;
-
-    // second action
-    this.focusOnBarcodeInputElement();
-  }
-
   ngAfterViewInit() {
     this.barcode.readonly = true;
   }
 
-  async brokenRegisterModal() {
-    const modal = await this.modalController.create({
-      component: BrokrnRegisterComponent,
-      componentProps: {
-        'title': 'ثبت عملیات',
-      }
-    });
-    return await modal.present();
+  onClickBackButton() {
+    this.barcodeReaderService.setBarcode(null);
   }
+
+  changeInputBarcode() {
+
+    const barcode:string = this.barcode.value.toString();
+
+    if ( barcode ) {
+
+      const loading$ = this.barcodeReaderService.getProductInformation(barcode);
+
+      loading$.subscribe((loading) => loading.onDidDismiss().then(() => {
+
+        this.barcode.value = "";
+        this.barcode.readonly = true;
+        this.focusOnBarcodeInputElement();
+
+      }));
+
+    }
+
+  }
+
+  async brokenRegisterModal() {
+
+    const barcode:string = this.barcodeReaderService.getBarcode();    
+
+    if ( barcode ) {
+
+      const modal = await this.modalController.create({
+          component: BrokrnRegisterComponent,
+          componentProps: {
+            'title': 'ثبت عملیات',
+            'barcode': barcode
+          }
+        });
+        
+        await modal.present();
+
+        const { data } = await modal.onWillDismiss();
+        
+        if (data) {
+          this.barcode.readonly = true;
+          this.focusOnBarcodeInputElement();
+        };
+
+      }
+      else {
+
+        const alert = await this.alertController.create({
+          cssClass: 'broken-product-alert',
+          header: 'توجه',
+          message: 'لطفا بارکد را اسکن نمایید',
+          buttons: [
+            {
+              text: 'باشه',
+              role: 'okay',
+              handler: () => {
+                this.barcode.readonly = true;
+                this.focusOnBarcodeInputElement();
+              }
+            }
+          ]
+        });
+    
+        await alert.present();
+
+      }
+
+  }
+
 
 }

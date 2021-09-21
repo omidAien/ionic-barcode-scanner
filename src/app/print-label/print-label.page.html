@@ -7,6 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
 
   <div class="barcode-container ion-padding">
@@ -61,18 +62,36 @@
       </div>
     </ion-item>
 
-
+    <ion-item>
+      <div class="product-attribute-container">
+        <div class="product-attribute-label">
+          <span>تعداد</span>
+        </div>
+        <div class="product-attribute-description">
+          <span>256</span>
+        </div>
+      </div>
+    </ion-item>
 
   </ion-list>
-
 
 </ion-content>
 
 
 <ion-footer>
 
-  <ion-toolbar button (click)="brokenRegisterModal()" expand="full" fill="solid" color="success" shape="round">
-      <span class="ion-justify-content-center">ثبت عملیات</span>
+  <ion-toolbar class="ion-padding-horizontal">
+
+    <ion-buttons slot="start">
+      <ion-button fill="solid" color="success">
+        ارسال
+      </ion-button>
+    </ion-buttons>
+
+    <ion-item slot="primary">
+      <ion-input inputmode="numeric" type="number" placeholder="تعداد" style="text-align: right;background-color: lightgray;"></ion-input>
+    </ion-item>
+
   </ion-toolbar>
 
 </ion-footer>

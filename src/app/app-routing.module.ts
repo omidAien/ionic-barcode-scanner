@@ -22,6 +22,10 @@ const routes: Routes = [
     loadChildren: () => import('./broken-product/broken-product.module').then( m => m.BrokenProductPageModule)
   },
   {
+    path: 'print-label',
+    loadChildren: () => import('./print-label/print-label.module').then( m => m.PrintLabelPageModule)
+  },
+  {
     path: 'barcode',
     loadChildren: () => import('./barcode/barcode.module').then( m => m.BarcodePageModule),
     canActivate: [AuthGuard]
