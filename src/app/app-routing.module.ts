@@ -11,23 +11,22 @@ const routes: Routes = [
   },
   {
     path: 'main',
-    loadChildren: () => import('./main/main.module').then( m => m.MainPageModule)
+    loadChildren: () => import('./main/main.module').then( m => m.MainPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'product-tracker',
-    loadChildren: () => import('./product-tracker/product-tracker.module').then( m => m.ProductTrackerPageModule)
+    loadChildren: () => import('./product-tracker/product-tracker.module').then( m => m.ProductTrackerPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'broken-product',
-    loadChildren: () => import('./broken-product/broken-product.module').then( m => m.BrokenProductPageModule)
+    loadChildren: () => import('./broken-product/broken-product.module').then( m => m.BrokenProductPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'print-label',
-    loadChildren: () => import('./print-label/print-label.module').then( m => m.PrintLabelPageModule)
-  },
-  {
-    path: 'barcode',
-    loadChildren: () => import('./barcode/barcode.module').then( m => m.BarcodePageModule),
+    loadChildren: () => import('./print-label/print-label.module').then( m => m.PrintLabelPageModule),
     canActivate: [AuthGuard]
   },
   {
