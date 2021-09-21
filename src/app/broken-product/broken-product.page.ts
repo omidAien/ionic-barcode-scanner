@@ -44,6 +44,7 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     this.focusOnBarcodeInputElement();
+    this.barcodeReaderService.setBarcode(null);
   }
 
   ngAfterViewInit() {

@@ -41,6 +41,7 @@ export class PrintLabelPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     this.focusOnBarcodeInputElement();
+    this.barcodeReaderService.setBarcode(null);
   }
 
   ngAfterViewInit() {

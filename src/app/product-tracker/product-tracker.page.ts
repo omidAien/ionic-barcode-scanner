@@ -38,6 +38,7 @@ export class ProductTrackerPage implements OnInit, AfterViewInit {
 
   ionViewWillEnter() {
     this.focusOnBarcodeInputElement();
+    this.barcodeReaderService.setBarcode(null);
   }
 
   changeInputBarcode() {
