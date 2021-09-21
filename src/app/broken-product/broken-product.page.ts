@@ -59,7 +59,7 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
 
     const barcode:string = this.barcode.value.toString();
 
-    if ( barcode ) {
+    if ( barcode.length >= 12 ) {
 
       const loading$ = this.barcodeReaderService.getProductInformation(barcode);
 
