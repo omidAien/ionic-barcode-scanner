@@ -50,3 +50,19 @@
 .broken-product-alert .alert-wrapper .alert-button-group {
   justify-content: center !important;
 }
+
+.alert-radio-group .alert-button-inner {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 20px;
+}
+
+.alert-radio-group .alert-button-inner .alert-radio-icon {
+  left: 0;
+  right: 26px;
+}
+
+.alert-radio-group .alert-button-inner .alert-radio-label {
+  text-align: right;
+  font-size: 12px;
+}
