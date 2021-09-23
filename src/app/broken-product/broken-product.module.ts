@@ -7,13 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { BrokenProductPageRoutingModule } from './broken-product-routing.module';
 
 import { BrokenProductPage } from './broken-product.page';
+import { ProductTrackerPage } from '../product-tracker/product-tracker.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    BrokenProductPageRoutingModule
+    BrokenProductPageRoutingModule,
   ],
   declarations: [BrokenProductPage]
 })

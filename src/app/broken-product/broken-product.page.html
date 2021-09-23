@@ -14,57 +14,32 @@
     <ion-input #barcode (ionChange)="changeInputBarcode()"></ion-input>
   </div>
 
+  <ng-container *ngIf=" (barcodeReaderService.barcodeTrackerResponse$ | async) as barcodeTrackerResponse ">
 
-  <ion-list>
+    <ng-container *ngIf=" !barcodeTrackerResponse.Error.hasError; else NOTVALIDBARCODE ">
 
-    <ion-item>
-      <div class="product-attribute-container">
-        <div class="product-attribute-label">
-          <span>نام</span>
-        </div>
-        <div class="product-attribute-description">
-          <span>شیشه شماره 5</span>
-        </div>
-      </div>
-    </ion-item>
+      <ion-list >
+        <ion-item *ngFor="let item of barcodeTrackerResponse.Barcode">
+          <div class="product-attribute-container">
+            <div class="product-attribute-label">
+              <span>{{ item.Caption }}</span>
+            </div>
+            <div class="product-attribute-description">
+              <span>{{ item.Value }}</span>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
 
-    <ion-item>
-      <div class="product-attribute-container">
-        <div class="product-attribute-label">
-          <span>شماره شناسه</span>
-        </div>
-        <div class="product-attribute-description">
-          <span>123456789</span>
-        </div>
-      </div>
-    </ion-item>
+    </ng-container>
 
-    <ion-item>
-      <div class="product-attribute-container">
-        <div class="product-attribute-label">
-          <span>تولید کننده</span>
-        </div>
-        <div class="product-attribute-description">
-          <span>شیشه ایلیا</span>
-        </div>
-      </div>
-    </ion-item>
+    <ng-template #NOTVALIDBARCODE>
+      <span class="ion-margin-horizontal ion-padding-vertical barcode-tracker-message" >
+        {{ barcodeTrackerResponse.Error.Message }}
+      </span>
+    </ng-template>
 
-    <ion-item>
-      <div class="product-attribute-container">
-        <div class="product-attribute-label">
-          <span>توضیحات</span>
-        </div>
-        <div class="product-attribute-description">
-          <span>در حال حاضر در زمانه‌ای هستیم که تولید محتوا در تمامی کسب‌و‌کارها حرف اول را می‌زند</span>
-        </div>
-      </div>
-    </ion-item>
-
-
-
-  </ion-list>
-
+  </ng-container>
 
 </ion-content>
 

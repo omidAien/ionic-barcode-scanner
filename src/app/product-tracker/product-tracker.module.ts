@@ -15,6 +15,6 @@ import { ProductTrackerPage } from './product-tracker.page';
     IonicModule,
     ProductTrackerPageRoutingModule
   ],
-  declarations: [ProductTrackerPage]
+  declarations: [ProductTrackerPage],
 })
 export class ProductTrackerPageModule {}

@@ -8,6 +8,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { IonCheckbox, ToastController } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { ManageUserService } from '../services/manage-user.service';
 
 @Component({
   selector: 'app-authenticate',
@@ -26,18 +27,19 @@ export class AuthenticatePage implements OnInit {
   clientInformation: ClientInformation;
 
   loginForm:FormGroup;
-  remmeberMeIsChecked:boolean = false;
+  remmeberMeIsChecked:boolean = true;
 
   constructor(private globalAPIService: GlobalAPIService, 
               public loadingService: LoadingService,
               private cookieService: CookieService,
               private router: Router,
+              private managerUser: ManageUserService,
               public toastController: ToastController) { }
 
   ngOnInit() {
 
     this.clientInformation = JSON.parse(this.cookieService.get("clientInformation"));
-    this.remmeberMeIsChecked = JSON.parse(localStorage.getItem("remmeberMe"));
+    // this.remmeberMeIsChecked = JSON.parse(localStorage.getItem("remmeberMe"));
 
     const systemInformation$: Observable<SystemInformation> = this.globalAPIService.getSystemInformation();
     const systemInformation: (SystemInformation | null) = JSON.parse(sessionStorage.getItem("SystemInformation"));
@@ -103,11 +105,13 @@ export class AuthenticatePage implements OnInit {
             tap((authenticateResponse: AuthenticateResponse) => {
               
               if ( !authenticateResponse.Error.hasError ) {
-
-                this.applyRememberMe(username, password);
                 
                 const token: string = authenticateResponse.Token;
+
                 this.cookieService.set("token", JSON.stringify(authenticateResponse.Token));
+
+                this.managerUser.setUserRole(+authenticateResponse.DefaultWorkgroupID);
+
                 this.saveToSessionStorage("userLogin", JSON.stringify(true));
                 this.router.navigateByUrl("/main");
 

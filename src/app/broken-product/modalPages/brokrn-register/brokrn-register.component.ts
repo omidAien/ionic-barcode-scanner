@@ -26,6 +26,7 @@ export class BrokrnRegisterComponent implements OnInit {
     });
 
     this.barcodeReaderService.setBarcode(null);
+    this.barcodeReaderService.resetBarcodeTrackerResponse();
   }
 
   selectOptions(event:any, role:string) {

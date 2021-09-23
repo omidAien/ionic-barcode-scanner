@@ -53,11 +53,28 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
 
   onClickBackButton() {
     this.barcodeReaderService.setBarcode(null);
+    this.barcodeReaderService.resetBarcodeTrackerResponse();
   }
 
   changeInputBarcode() {
 
-    const barcode:string = this.barcode.value.toString();
+    let barcode:string = "";
+
+    if ( this.barcode.value.toString().startsWith('j') ) {
+
+      barcode = this.barcode.value.toString().replace("j", "");
+
+    }
+    else if ( this.barcode.value.toString().startsWith('s') ) {
+
+      barcode = this.barcode.value.toString().replace("s", "");
+
+    }
+    else {
+
+      barcode = this.barcode.value.toString();
+
+    }
 
     if ( barcode.length >= 12 ) {
 
@@ -77,49 +94,48 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
 
   async brokenRegisterModal() {
 
-    const barcode:string = this.barcodeReaderService.getBarcode();    
+    const spanBarcodeTrackerErrorMsgElm = document.querySelector("span.barcode-tracker-message") as HTMLSpanElement;
+    
+    if ( spanBarcodeTrackerErrorMsgElm ) {
+      
+      const alert = await this.alertController.create({
+        cssClass: 'broken-product-alert',
+        header: 'توجه',
+        message: 'لطفا بارکد را به درستی اسکن نمایید',
+        buttons: [
+          {
+            text: 'باشه',
+            role: 'okay',
+            handler: () => {
+              this.barcode.readonly = true;
+              this.focusOnBarcodeInputElement();
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
 
-    if ( barcode ) {
+    }
+    else {
 
       const modal = await this.modalController.create({
-          component: BrokrnRegisterComponent,
-          componentProps: {
-            'title': 'ثبت عملیات',
-            'barcode': barcode
-          }
-        });
-        
-        await modal.present();
+        component: BrokrnRegisterComponent,
+        componentProps: {
+          'title': 'ثبت عملیات',
+        }
+      });
+      
+      await modal.present();
 
-        const { data } = await modal.onWillDismiss();
-        
-        if (data) {
-          this.barcode.readonly = true;
-          this.focusOnBarcodeInputElement();
-        };
-
-      }
-      else {
-
-        const alert = await this.alertController.create({
-          cssClass: 'broken-product-alert',
-          header: 'توجه',
-          message: 'لطفا بارکد را اسکن نمایید',
-          buttons: [
-            {
-              text: 'باشه',
-              role: 'okay',
-              handler: () => {
-                this.barcode.readonly = true;
-                this.focusOnBarcodeInputElement();
-              }
-            }
-          ]
-        });
-    
-        await alert.present();
-
-      }
+      const { data } = await modal.onWillDismiss();
+      
+      if (data) {
+        this.barcode.readonly = true;
+        this.focusOnBarcodeInputElement();
+      };
+      
+    }
 
   }
 

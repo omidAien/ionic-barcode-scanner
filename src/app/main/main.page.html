@@ -18,7 +18,7 @@
 
   </ion-item>
 
-  <ion-item button (click)="goTospecificPage('brokenProduct')">
+  <ion-item button (click)="goTospecificPage('brokenProduct')" *ngIf=" defaultWorkGroupId === 3 ">
 
     <ion-label class="ion-text-right">
       ثبت شکست
@@ -30,7 +30,7 @@
 
   </ion-item>
 
-  <ion-item button (click)="goTospecificPage('printLabel')">
+  <ion-item button (click)="goTospecificPage('printLabel')" *ngIf=" defaultWorkGroupId === 9 ">
 
     <ion-label class="ion-text-right">
       چاپ لیبل

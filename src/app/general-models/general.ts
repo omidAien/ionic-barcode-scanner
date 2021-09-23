@@ -3,6 +3,8 @@ export interface ErrorModel {
     Code: number;
     Message: string;
     MessageViewType: number;
+    LogData:any;
+    LogID:number;
 }
 
 export interface Workstation {
@@ -63,4 +65,18 @@ export interface AuthenticateResponse {
     Workgroups: UserWorkgroup[] | null;
     DefaultWorkgroupID: number | UserWorkgroup;
     Projects: UserProject[];
+}
+
+export interface BarcodeTracker {
+    barcode:string;
+}
+
+export interface BarcodeInformation {
+    Caption:string;
+    Value:string;
+}
+
+export interface BarcodeTrackerResponse {
+    Error: ErrorModel;
+    Barcode: BarcodeInformation[];
 }

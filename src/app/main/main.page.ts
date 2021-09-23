@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { noop, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { ManageUserService } from '../services/manage-user.service';
 
 @Component({
   selector: 'app-main',
@@ -9,11 +12,46 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class MainPage implements OnInit {
 
-  mainPageTitle:string = "صفحه اصلی";
+  mainPageTitle:string = "";
+  defaultWorkGroupId:number;
 
-  constructor(private cookieService: CookieService, private router: Router) { }
+  constructor(private cookieService: CookieService, 
+              private manageUserService:ManageUserService,
+              private router: Router) { }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+
+    this.manageUserService
+        .userRole$
+        .pipe(
+          catchError((error) => {
+
+            this.defaultWorkGroupId = JSON.parse(sessionStorage.getItem("DefaultWorkgroupID"));
+
+            return throwError(error)
+          }),
+          tap((_defaultWorkGroupId:number) => {
+
+              if ( _defaultWorkGroupId ) {
+
+                this.defaultWorkGroupId = _defaultWorkGroupId;
+
+              }
+              else {
+
+                this.defaultWorkGroupId = JSON.parse(sessionStorage.getItem("DefaultWorkgroupID"));
+                
+              }
+
+              this.determineMainPageTitleBasedOnDefaultWorkGroupId(this.defaultWorkGroupId);
+
+          })
+        )
+        .subscribe(noop)
+    
   }
 
   goTospecificPage(moduleName:string) {
@@ -40,6 +78,23 @@ export class MainPage implements OnInit {
     sessionStorage.clear();
     this.cookieService.delete("token");
     this.router.navigateByUrl("/");
+  }
+
+  determineMainPageTitleBasedOnDefaultWorkGroupId(id:number) {
+
+    switch (id) {
+
+      case 3:
+        this.mainPageTitle = "انبار";
+        break;
+
+      case 9:    
+      this.mainPageTitle = "کنترل کیفی";
+      break;
+
+    }
+
+
   }
 
 }

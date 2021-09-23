@@ -18,7 +18,7 @@ export class PrintLabelPage implements OnInit, AfterViewInit {
   constructor(private router: Router, public barcodeReaderService: BarcodeReaderService,) { 
 
     try {
-      
+
       this.title = this.router.getCurrentNavigation().extras.state.title;
 
     } catch (error) {
@@ -48,13 +48,25 @@ export class PrintLabelPage implements OnInit, AfterViewInit {
     this.barcode.readonly = true;
   }
 
-  onClickBackButton() {
-    this.barcodeReaderService.setBarcode(null);
-  }
-
   changeInputBarcode() {
 
-    const barcode:string = this.barcode.value.toString();
+    let barcode:string = "";
+
+    if ( this.barcode.value.toString().startsWith('j') ) {
+
+      barcode = this.barcode.value.toString().replace("j", "");
+
+    }
+    else if ( this.barcode.value.toString().startsWith('s') ) {
+
+      barcode = this.barcode.value.toString().replace("s", "");
+
+    }
+    else {
+
+      barcode = this.barcode.value.toString();
+
+    }
 
     if ( barcode.length >= 12 ) {
 
@@ -71,5 +83,11 @@ export class PrintLabelPage implements OnInit, AfterViewInit {
     }
 
   }
+
+  onClickBackButton() {
+    this.barcodeReaderService.setBarcode(null);
+    this.barcodeReaderService.resetBarcodeTrackerResponse();
+  }
+
 
 }

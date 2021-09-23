@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonInput } from '@ionic/angular';
+import { AlertController, IonInput } from '@ionic/angular';
+import { from, noop } from 'rxjs';
+import { delay, tap } from 'rxjs/operators';
+import { BarcodeInformation, BarcodeTrackerResponse } from '../general-models/general';
 import { BarcodeReaderService } from '../services/barcode-reader.service';
 
 @Component({
@@ -14,7 +17,7 @@ export class ProductTrackerPage implements OnInit, AfterViewInit {
 
   title:string;
   barcodeContainerLabel:string = "بارکد";
-  
+
   constructor(private router: Router,
               public barcodeReaderService: BarcodeReaderService) { 
 
@@ -37,13 +40,31 @@ export class ProductTrackerPage implements OnInit, AfterViewInit {
   }
 
   ionViewWillEnter() {
+
     this.focusOnBarcodeInputElement();
     this.barcodeReaderService.setBarcode(null);
+
   }
 
   changeInputBarcode() {
 
-    const barcode:string = this.barcode.value.toString();
+    let barcode:string = "";
+
+    if ( this.barcode.value.toString().startsWith('j') ) {
+
+      barcode = this.barcode.value.toString().replace("j", "");
+
+    }
+    else if ( this.barcode.value.toString().startsWith('s') ) {
+
+      barcode = this.barcode.value.toString().replace("s", "");
+
+    }
+    else {
+
+      barcode = this.barcode.value.toString();
+
+    }
 
     if ( barcode.length >= 12 ) {
 
@@ -63,6 +84,7 @@ export class ProductTrackerPage implements OnInit, AfterViewInit {
 
   onClickBackButton() {
     this.barcodeReaderService.setBarcode(null);
+    this.barcodeReaderService.resetBarcodeTrackerResponse();
   }
 
   ngAfterViewInit() {
