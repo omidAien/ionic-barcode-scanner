@@ -23,10 +23,12 @@ export class BrokrnRegisterComponent implements OnInit {
   dismiss() {
     this.modalController.dismiss({
       'dismissed': true
+    }).then(() => {
+
+      this.barcodeReaderService.setBarcode(null);
+      this.barcodeReaderService.resetBarcodeTrackerResponse();
     });
 
-    this.barcodeReaderService.setBarcode(null);
-    this.barcodeReaderService.resetBarcodeTrackerResponse();
   }
 
   selectOptions(event:any, role:string) {

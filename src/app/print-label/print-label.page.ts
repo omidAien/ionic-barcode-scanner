@@ -29,8 +29,7 @@ export class PrintLabelPage implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   focusOnBarcodeInputElement() {
     setTimeout(() => {

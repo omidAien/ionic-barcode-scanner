@@ -1,0 +1,28 @@
+
+<ng-container *ngIf=" (barcodeReaderService.barcodeTrackerResponse$ | async) as barcodeTrackerResponse ">
+
+  <ng-container *ngIf=" !barcodeTrackerResponse.Error.hasError; else NOTVALIDBARCODE ">
+
+    <ion-list >
+      <ion-item *ngFor="let item of barcodeTrackerResponse.Barcode">
+        <div class="product-attribute-container">
+          <div class="product-attribute-label">
+            <span>{{ item.Caption }}</span>
+          </div>
+          <div class="product-attribute-description">
+            <span>{{ item.Value }}</span>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+
+  </ng-container>
+
+  <ng-template #NOTVALIDBARCODE>
+    <span class="ion-margin-horizontal ion-padding-vertical barcode-tracker-message" >
+      {{ barcodeTrackerResponse.Error.Message }}
+    </span>
+  </ng-template>
+
+</ng-container>
+

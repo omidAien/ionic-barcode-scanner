@@ -1,9 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonInput } from '@ionic/angular';
-import { from, noop } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
-import { BarcodeInformation, BarcodeTrackerResponse } from '../general-models/general';
+import { IonInput } from '@ionic/angular';
 import { BarcodeReaderService } from '../services/barcode-reader.service';
 
 @Component({
@@ -11,12 +8,11 @@ import { BarcodeReaderService } from '../services/barcode-reader.service';
   templateUrl: './product-tracker.page.html',
   styleUrls: ['./product-tracker.page.scss'],
 })
-export class ProductTrackerPage implements OnInit, AfterViewInit {
+export class ProductTrackerPage implements OnInit {
 
   @ViewChild('barcode') barcode: IonInput;
-
-  title:string;
   barcodeContainerLabel:string = "بارکد";
+  title:string;
 
   constructor(private router: Router,
               public barcodeReaderService: BarcodeReaderService) { 
@@ -82,13 +78,13 @@ export class ProductTrackerPage implements OnInit, AfterViewInit {
 
   }
 
+  ngAfterViewInit() {
+    this.barcode.readonly = true;
+  }
+
   onClickBackButton() {
     this.barcodeReaderService.setBarcode(null);
     this.barcodeReaderService.resetBarcodeTrackerResponse();
-  }
-
-  ngAfterViewInit() {
-    this.barcode.readonly = true;
   }
 
 }

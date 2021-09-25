@@ -9,44 +9,6 @@
   margin-top: 10px;
 }
 
-.product-attribute-container {
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: auto 95px;
-  grid-template-areas: "product-attribute-description product-attribute-label";
-  width: 100%;
-  padding: 5px 0;
-}
-
-.product-attribute-container .product-attribute-label {
-  grid-area: product-attribute-label;
-  text-align: right;
-}
-
-.product-attribute-container .product-attribute-label span {
-  white-space: nowrap;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.product-attribute-container .product-attribute-description {
-  grid-area: product-attribute-description;
-  text-align: right;
-}
-
-.product-attribute-container .product-attribute-description span {
-  white-space: pre-wrap;
-  font-size: 14px;
-  text-justify: inter-word;
-  font-weight: bold;
-  color: maroon;
-}
-
 ion-toolbar span {
   display: flex;
-}
-
-.barcode-tracker-message {
-  display: flex;
-  justify-content: center;
 }

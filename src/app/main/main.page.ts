@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { noop, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { BarcodeReaderService } from '../services/barcode-reader.service';
 import { ManageUserService } from '../services/manage-user.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class MainPage implements OnInit {
 
   constructor(private cookieService: CookieService, 
               private manageUserService:ManageUserService,
+              public barcodeReaderService:BarcodeReaderService,
               private router: Router) { }
 
   ngOnInit() {
@@ -27,23 +29,13 @@ export class MainPage implements OnInit {
     this.manageUserService
         .userRole$
         .pipe(
-          catchError((error) => {
-
-            this.defaultWorkGroupId = JSON.parse(sessionStorage.getItem("DefaultWorkgroupID"));
-
-            return throwError(error)
-          }),
           tap((_defaultWorkGroupId:number) => {
 
               if ( _defaultWorkGroupId ) {
-
                 this.defaultWorkGroupId = _defaultWorkGroupId;
-
               }
               else {
-
-                this.defaultWorkGroupId = JSON.parse(sessionStorage.getItem("DefaultWorkgroupID"));
-                
+                this.defaultWorkGroupId = JSON.parse(sessionStorage.getItem("DefaultWorkgroupID"))
               }
 
               this.determineMainPageTitleBasedOnDefaultWorkGroupId(this.defaultWorkGroupId);
@@ -51,6 +43,9 @@ export class MainPage implements OnInit {
           })
         )
         .subscribe(noop)
+
+
+    this.barcodeReaderService.resetBarcodeTrackerResponse();
     
   }
 

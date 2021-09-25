@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { BehaviorSubject, from, noop, of } from 'rxjs';
 import { delay, finalize, tap } from 'rxjs/operators';
 import { BarcodeReaderService } from '../services/barcode-reader.service';
+import { ProductInfoViewerComponent } from '../shared/product-info-viewer/product-info-viewer.component';
 import { BrokrnRegisterComponent } from './modalPages/brokrn-register/brokrn-register.component';
 
 @Component({
@@ -94,9 +95,9 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
 
   async brokenRegisterModal() {
 
-    const spanBarcodeTrackerErrorMsgElm = document.querySelector("span.barcode-tracker-message") as HTMLSpanElement;
+    const barcodeIsExistence:boolean = !!this.barcodeReaderService.getBarcode();
     
-    if ( spanBarcodeTrackerErrorMsgElm ) {
+    if ( !barcodeIsExistence ) {
       
       const alert = await this.alertController.create({
         cssClass: 'broken-product-alert',
