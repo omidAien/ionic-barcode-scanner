@@ -105,7 +105,7 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
         message: 'لطفا بارکد را به درستی اسکن نمایید',
         buttons: [
           {
-            text: 'باشه',
+            text: 'تایید',
             role: 'okay',
             handler: () => {
               this.barcode.readonly = true;

@@ -25,13 +25,13 @@
   <ion-toolbar class="ion-padding-horizontal">
 
     <ion-buttons slot="start">
-      <ion-button fill="solid" color="success">
+      <ion-button fill="solid" color="success" (click)="registerPrintLabel()">
         ارسال
       </ion-button>
     </ion-buttons>
 
     <ion-item slot="primary">
-      <ion-input inputmode="numeric" type="number" placeholder="تعداد" style="text-align: right;background-color: lightgray;"></ion-input>
+      <ion-input #numberOfLabel inputmode="numeric" type="number" placeholder="تعداد" style="text-align: right;background-color: lightgray;"></ion-input>
     </ion-item>
 
   </ion-toolbar>

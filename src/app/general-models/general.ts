@@ -80,3 +80,8 @@ export interface BarcodeTrackerResponse {
     Error: ErrorModel;
     Barcode: BarcodeInformation[];
 }
+
+export interface QCPrint {
+    barcode:string;
+    number:number;
+}

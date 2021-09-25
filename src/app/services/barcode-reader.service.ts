@@ -30,7 +30,7 @@ export class BarcodeReaderService {
 
     // 2. create loadingController Promise by menas of ionic's loadingController
     const loadingPromise = this.loadingController.create({
-      message: '... لطفا صبر کنید',
+      message: '... لطفا چند صبر کنید',
     });
     
     // 3. convert loadingController Promise to Observeable
@@ -80,6 +80,10 @@ export class BarcodeReaderService {
 
   resetBarcodeTrackerResponse() {
     this.barcodeTrackerResponseSubject.next(null);
+  }
+
+  updateBarcodeTrackerResponse(value:BarcodeTrackerResponse) {
+    this.barcodeTrackerResponseSubject.next(value);
   }
         
 }

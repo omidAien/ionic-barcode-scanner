@@ -62,7 +62,7 @@ export class MainPage implements OnInit {
         break;
 
       case 'printLabel':
-        this.router.navigateByUrl('/print-label', { state : { title: 'چاپ لیبل' } });
+        this.router.navigateByUrl('/print-label', { state : { title: 'چاپ لیبل پای سکو' } });
         break;   
 
     }
