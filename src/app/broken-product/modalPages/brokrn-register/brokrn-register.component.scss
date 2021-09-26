@@ -1,7 +1,7 @@
 /* Set the width to the full container and center the content */
 ion-select {
   width: 100%;
-  font-size: 12px;
+  font-size: 13px;
   flex-direction: row-reverse;
 }
 
@@ -11,4 +11,22 @@ ion-select::part(placeholder) {
 
 ion-select::part(text) {
   text-align: right;
+}
+
+ion-input {
+  font-size: 13px;
+}
+
+.data-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-column-gap: 5px;
+}
+
+.ion-label-custome {
+  display: flex;
+  width: 100%;
+  flex-direction: row-reverse;
+  padding: 0 15px;
 }

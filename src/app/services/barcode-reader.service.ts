@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, from, noop, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, delay, finalize, tap } from 'rxjs/operators';
@@ -20,6 +20,7 @@ export class BarcodeReaderService {
 
   constructor(public loadingController: LoadingController,
               private globalService: GlobalAPIService,
+              private alertController: AlertController,
               private router: Router,
               private cookieService: CookieService) { }
 
@@ -60,7 +61,30 @@ export class BarcodeReaderService {
         delay(2000),
         concatMap(() => barcodeTracker$),
         tap((barcodeTrackerResponse:BarcodeTrackerResponse) => {
-          this.barcodeTrackerResponseSubject.next(barcodeTrackerResponse)
+
+          this.barcodeTrackerResponseSubject.next(barcodeTrackerResponse);
+
+          if ( barcodeTrackerResponse.Error.LogData ) {
+            
+            const logData = JSON.parse(barcodeTrackerResponse.Error.LogData);
+            
+            const alertController$ = from(this.alertController.create({
+              cssClass: 'broken-product-alert',
+              header: 'توجه',
+              message: logData.Status,
+              buttons: [
+                {
+                  text: 'تایید',
+                  role: 'okay'
+                }
+              ]
+              })
+            );
+
+            alertController$.subscribe((alertController) => alertController.present());  
+
+          }
+
         }),
         finalize(() => loading$.subscribe((loading) => loading.dismiss()))
       )

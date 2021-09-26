@@ -5,43 +5,65 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
 
-  <ion-list>
-    <ion-list-header>
-      <ion-label class="ion-text-right ion-padding">
-        مسئول
-      </ion-label>
-    </ion-list-header>
-  
-    <ion-item>
-      <ion-select placeholder="مسئول" ok-text="انتخاب" cancel-text="انصراف" (ionChange)="selectOptions($event, 'responser')">
-        <ion-select-option value="f">آقای امیری</ion-select-option>
-        <ion-select-option value="m">آقای آیینه</ion-select-option>
-      </ion-select>
-    </ion-item>
+  <ng-container *ngIf=" breakFormData ">
 
-  </ion-list>
+    <ion-list *ngFor="let item of breakFormData">
 
-  <ion-list>
-    <ion-list-header>
-      <ion-label class="ion-text-right ion-padding">
-        علت شکست
-      </ion-label>
-    </ion-list-header>
+      <!-- related to label -->
+      <ng-container *ngIf=" item.ObjectType === 1 ">
 
-    <ion-item>
-      <ion-select placeholder="علت شکست" ok-text="انتخاب" cancel-text="انصراف" (ionChange)="selectOptions($event, 'brokenReason')">
-        <ion-select-option value="LiftTruck">برخورد با لیفتراک</ion-select-option>
-        <ion-select-option value="HumanError">خطای انسانی</ion-select-option>
-        <ion-select-option value="Transportation">حمل و نقل</ion-select-option>
-      </ion-select>
-    </ion-item>
-  
-  </ion-list>
+        <ion-item>
+          <ion-label slot="end">{{ item.Caption }}</ion-label>
+          <ion-input class="ion-text-right" [value]=" item.DefaultValue " readonly ></ion-input>
+        </ion-item>
 
-  <ion-button [disabled]=" isDisabled() "
-              class="ion-padding" 
+      </ng-container>
+      
+      <!-- related to input -->
+      <ng-container *ngIf=" item.ObjectType === 2 ">
+
+        <ion-item>
+          <ion-label slot="end">{{ item.Caption }}</ion-label>
+          <ion-input #numberOfBreak
+                     [name]=" item.ID " 
+                     class="ion-text-right"
+                     inputmode="numeric" 
+                     type="number" 
+                     [value]="item.DefaultValue"
+                     [placeholder]=" item.Caption ">
+          </ion-input>
+        </ion-item>
+
+      </ng-container>
+      
+      <!-- related to select -->
+      <ng-container *ngIf=" item.ObjectType === 3 ">
+
+        <ion-label class="ion-label-custome">{{ item.Caption }}</ion-label>
+        <ion-item>
+          <ion-select value=" {{ item.DefaultValue }} " 
+                      [placeholder]=" item.Caption "
+                      ok-text="انتخاب" 
+                      cancel-text="انصراف" 
+                      (ionChange)="selectOptions($event, item.ID)">
+
+            <ion-select-option *ngFor="let op of convertToJson(item.Items)" [value]=" op.Code ">
+              {{ op.Value }}
+            </ion-select-option>
+
+          </ion-select>
+        </ion-item>
+
+      </ng-container>
+
+    </ion-list>
+
+  </ng-container>
+
+  <ion-button (click)="sendDataToSever()"
+              class="ion-margin-vertical" 
               shape="round"
               fill="solid" 
               expand="block" 

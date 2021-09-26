@@ -85,3 +85,13 @@ export interface QCPrint {
     barcode:string;
     number:number;
 }
+
+export interface GetBreak {
+    Break: {ID:number; Caption:string; DefaultValue:string; Items: null | []; ObjectType:number}[];
+    Error: ErrorModel;
+}
+
+export interface SetBreak {
+    fieldID: number;
+    fieldValue: string;
+}

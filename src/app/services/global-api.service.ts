@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { throwError } from 'rxjs';
 import { catchError, shareReplay } from 'rxjs/operators'
 import { environment } from "../../environments/environment";
-import { AuthenticateParameters, AuthenticateResponse, BarcodeTracker, BarcodeTrackerResponse, QCPrint, SystemInformation } from '../general-models/general';
+import { AuthenticateParameters, AuthenticateResponse, BarcodeTracker, BarcodeTrackerResponse, QCPrint, SetBreak, SystemInformation } from '../general-models/general';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +76,24 @@ export class GlobalAPIService {
     const body:Required<string> = JSON.stringify(qcPrint);
 
     return this.httpClient.post<BarcodeTrackerResponse>(requestURL, body, {headers:this.setHeaders(token)});
+
+  }
+
+  mapGetBreak(token:string, barcodeTracker:BarcodeTracker) {
+
+    const requestURL:Required<string> = this.baseURL.concat("mapGetBreak");
+    const body:Required<string> = JSON.stringify(barcodeTracker);
+
+    return this.httpClient.post(requestURL, body, {headers:this.setHeaders(token)});
+
+  }
+
+  mapSetBreak(token:string, setBreak:SetBreak[]) {
+
+    const requestURL:Required<string> = this.baseURL.concat("mapSetBreak");
+    const body:Required<string> = JSON.stringify(setBreak);
+
+    return this.httpClient.post(requestURL, body, {headers:this.setHeaders(token)});
 
   }
 

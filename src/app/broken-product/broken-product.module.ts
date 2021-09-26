@@ -7,8 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { BrokenProductPageRoutingModule } from './broken-product-routing.module';
 
 import { BrokenProductPage } from './broken-product.page';
-import { ProductTrackerPage } from '../product-tracker/product-tracker.page';
 import { SharedModule } from '../shared/shared.module';
+import { BrokrnRegisterComponent } from './modalPages/brokrn-register/brokrn-register.component';
+
 
 @NgModule({
   imports: [
@@ -18,6 +19,9 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule,
     BrokenProductPageRoutingModule,
   ],
-  declarations: [BrokenProductPage]
+  declarations: [BrokenProductPage, BrokrnRegisterComponent],
+  entryComponents:[
+    BrokrnRegisterComponent
+  ]
 })
 export class BrokenProductPageModule {}

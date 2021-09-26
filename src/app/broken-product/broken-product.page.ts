@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { AlertController, IonInput } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject, from, noop, of } from 'rxjs';
-import { delay, finalize, tap } from 'rxjs/operators';
+import { delay, finalize, shareReplay, tap } from 'rxjs/operators';
+import { BarcodeTrackerResponse } from '../general-models/general';
 import { BarcodeReaderService } from '../services/barcode-reader.service';
 import { ProductInfoViewerComponent } from '../shared/product-info-viewer/product-info-viewer.component';
 import { BrokrnRegisterComponent } from './modalPages/brokrn-register/brokrn-register.component';
@@ -61,21 +62,11 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
 
     let barcode:string = "";
 
-    if ( this.barcode.value.toString().startsWith('j') ) {
+    if ( this.barcode.value.toString().startsWith('j') ) { barcode = this.barcode.value.toString().replace("j", ""); }
 
-      barcode = this.barcode.value.toString().replace("j", "");
+    else if ( this.barcode.value.toString().startsWith('s') ) { barcode = this.barcode.value.toString().replace("s", ""); }
 
-    }
-    else if ( this.barcode.value.toString().startsWith('s') ) {
-
-      barcode = this.barcode.value.toString().replace("s", "");
-
-    }
-    else {
-
-      barcode = this.barcode.value.toString();
-
-    }
+    else { barcode = this.barcode.value.toString(); }
 
     if ( barcode.length >= 12 ) {
 
@@ -95,7 +86,27 @@ export class BrokenProductPage implements OnInit, AfterViewInit {
 
   async brokenRegisterModal() {
 
-    const barcodeIsExistence:boolean = !!this.barcodeReaderService.getBarcode();
+    let barcodeIsExistence:boolean = false;
+
+    this.barcodeReaderService
+        .barcodeTrackerResponse$
+        .pipe(
+          shareReplay(),
+          tap((data:BarcodeTrackerResponse) => {
+
+            if ( data ) {
+
+              if ( data.Barcode ) { barcodeIsExistence = true; }
+
+              else { barcodeIsExistence = false; }
+
+            }
+
+            else { barcodeIsExistence = false; }
+
+          })
+        )
+        .subscribe(noop);
     
     if ( !barcodeIsExistence ) {
       
