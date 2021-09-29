@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonInput, LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, IonInput, IonSelect, IonSelectOption, LoadingController, ModalController } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { from, noop, of, throwError } from 'rxjs';
 import { catchError, concatMap, finalize, tap } from 'rxjs/operators';
-import { BarcodeTracker, GetBreak, SetBreak } from 'src/app/general-models/general';
+import { BarcodeTracker, ErrorModel, GetBreak, SetBreak } from 'src/app/general-models/general';
 import { BarcodeReaderService } from 'src/app/services/barcode-reader.service';
 import { GlobalAPIService } from 'src/app/services/global-api.service';
 
@@ -18,7 +19,7 @@ export class BrokrnRegisterComponent implements OnInit {
   @Input() title: string;
   @ViewChild('numberOfBreak') numberOfBreak:IonInput; 
 
-  breakFormData: { ID:number; Caption:string; DefaultValue:string; Items: null | []; ObjectType:number }[] = null;
+  breakFormData: { ID:number; Caption:string; DefaultValue:string; Items: null | string; ObjectType:number }[] = null;
 
   registerValue: { fieldID:number; fieldValue:string; }[] = [];
 
@@ -26,6 +27,7 @@ export class BrokrnRegisterComponent implements OnInit {
               private globalAPIService: GlobalAPIService,
               private cookieService: CookieService,
               private router: Router,
+              public alertController: AlertController,
               public loadingController: LoadingController,
               public barcodeReaderService: BarcodeReaderService,) { }
 
@@ -69,12 +71,48 @@ export class BrokrnRegisterComponent implements OnInit {
         concatMap(() => mapGetBreak$),
         tap((data: GetBreak) => {
           
-          console.log(data.Break);
           if ( !data.Error.hasError ) {
 
+            data.Break  
+                .map((item) => {
+
+                  const _id:number = item.ID;
+
+                  if ( item.DefaultValue && item.Items ) {
+
+                    const _Items:{ Code:string; Value:string;}[] = JSON.parse(item.Items);
+                    let _code:string = null;
+
+                    _Items.map((op:{ Code:string; Value:string;}) => {
+
+                      if ( op.Value === item.DefaultValue ) {
+                        _code = op.Code;
+                      }
+
+                    });
+
+                    setTimeout(() => this.registerValue.push({ fieldID: _id, fieldValue: _code }), 100);
+
+                  }
+                  else if ( item.DefaultValue && !item.Items ) {
+
+                    this.registerValue.push({ fieldID: _id, fieldValue: item.DefaultValue });
+
+                  }
+                  else if ( !item.DefaultValue ) {
+
+                    this.registerValue.push({ fieldID: _id, fieldValue: null });
+
+                  }
+
+            });
+
             setTimeout(() => {
+
               this.breakFormData = data.Break;
-            }, 500);
+
+
+            }, 200);
 
           }
 
@@ -87,12 +125,14 @@ export class BrokrnRegisterComponent implements OnInit {
 
   selectOptions(event:any, id:number) {
 
-    const data: { fieldID:number; fieldValue:string; } = {
-      fieldID: id,
-      fieldValue: event.detail.value
-    };
+    this.registerValue
+        .map((item:{ fieldID:number; fieldValue:string; }) => {
 
-    this.registerValue.push(data);
+          if ( item.fieldID === id ) {
+            item.fieldValue = event.detail.value;
+          }
+
+        });
   
   }
 
@@ -113,14 +153,6 @@ export class BrokrnRegisterComponent implements OnInit {
   }
 
   sendDataToSever() {
-
-    const barcode:string = this.barcodeReaderService.getBarcode();
-
-    this.registerValue.push({fieldID: +this.numberOfBreak.name, fieldValue: this.numberOfBreak.value.toString()});
-
-    this.registerValue.push({fieldID: 1, fieldValue: barcode});
-
-    console.log(this.registerValue)
 
     const token = "bearer ".concat(JSON.parse(this.cookieService.get("token")));
     const mapSetBreakRequest: SetBreak[] = this.registerValue;
@@ -143,14 +175,58 @@ export class BrokrnRegisterComponent implements OnInit {
       .pipe(
         tap(() => loading$.subscribe((loading) => loading.present())),
         concatMap(() => mapSetBreak$),
-        tap((data) => {
+        tap((data:ErrorModel) => {
 
-          console.log(data);
+          if ( !data.hasError ) {
+
+            const alertController$ = from(this.alertController.create({
+              cssClass: 'broken-product-alert',
+              header: 'توجه',
+              message: 'ثبت با موفقیت انجام شد',
+              buttons: [
+                {
+                  text: 'تایید',
+                  role: 'okay',
+                  handler: () => {
+                    this.dismiss();
+                  }
+                }
+              ]
+            }));
+
+            alertController$.subscribe((alertController) => alertController.present());
+
+          }
+          else {
+
+            const alertController$ = from(this.alertController.create({
+              cssClass: 'broken-product-alert',
+              header: 'توجه',
+              message: 'خطایی رخ داد',
+              buttons: [
+                {
+                  text: 'تایید',
+                  role: 'okay'
+                }
+              ]
+            }));
+
+            alertController$.subscribe((alertController) => alertController.present());
+
+
+          }
 
         }),
         finalize(() => loading$.subscribe((loading) => loading.dismiss()))
       )
       .subscribe(noop);
+
+  }
+
+  setIonSelectValue(event:IonSelect, defaultValue:string) {
+
+    event.value = defaultValue;
+
 
   }
 

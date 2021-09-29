@@ -32,6 +32,7 @@
                      inputmode="numeric" 
                      type="number" 
                      [value]="item.DefaultValue"
+                     (ionChange)="selectOptions($event, item.ID)"
                      [placeholder]=" item.Caption ">
           </ion-input>
         </ion-item>
@@ -41,10 +42,15 @@
       <!-- related to select -->
       <ng-container *ngIf=" item.ObjectType === 3 ">
 
-        <ion-label class="ion-label-custome">{{ item.Caption }}</ion-label>
+        <ng-container *ngIf=" item.DefaultValue ">
+          <ion-label class="ion-label-custome" *ngIf=" item.ID !== 6 ">{{ item.Caption }} : {{ item.DefaultValue }}</ion-label>
+          <ion-label class="ion-label-custome" *ngIf=" item.ID === 6 ">{{ item.DefaultValue }} : {{ item.Caption }}</ion-label>
+        </ng-container>
+
+        <ion-label class="ion-label-custome" *ngIf=" !item.DefaultValue ">{{ item.Caption }}</ion-label>
+
         <ion-item>
-          <ion-select value=" {{ item.DefaultValue }} " 
-                      [placeholder]=" item.Caption "
+          <ion-select [placeholder]=" item.Caption "
                       ok-text="انتخاب" 
                       cancel-text="انصراف" 
                       (ionChange)="selectOptions($event, item.ID)">

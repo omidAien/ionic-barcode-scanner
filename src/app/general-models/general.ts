@@ -87,7 +87,7 @@ export interface QCPrint {
 }
 
 export interface GetBreak {
-    Break: {ID:number; Caption:string; DefaultValue:string; Items: null | []; ObjectType:number}[];
+    Break: {ID:number; Caption:string; DefaultValue:string; Items: null | string; ObjectType:number}[];
     Error: ErrorModel;
 }
 

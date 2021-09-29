@@ -39,7 +39,6 @@ export class GlobalAPIService {
     return this.httpClient.get<SystemInformation>(requestURL)
                           .pipe(
                             catchError((error) => {
-                              window.location.reload();
                               return throwError(error);
                             }),
                             shareReplay()

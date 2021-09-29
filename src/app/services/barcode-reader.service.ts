@@ -63,8 +63,8 @@ export class BarcodeReaderService {
         tap((barcodeTrackerResponse:BarcodeTrackerResponse) => {
 
           this.barcodeTrackerResponseSubject.next(barcodeTrackerResponse);
-
-          if ( barcodeTrackerResponse.Error.LogData ) {
+          
+          if ( barcodeTrackerResponse.Error.LogData && this.router.url === '/broken-product' ) {
             
             const logData = JSON.parse(barcodeTrackerResponse.Error.LogData);
             

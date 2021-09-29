@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { noop, Observable } from 'rxjs';
+import { from, noop, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthenticateParameters, AuthenticateResponse, ClientInformation, SystemInformation } from '../general-models/general';
 import { GlobalAPIService } from '../services/global-api.service';
 import { LoadingService } from '../services/loading.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { IonCheckbox, ToastController } from '@ionic/angular';
+import { AlertController, IonCheckbox, ToastController } from '@ionic/angular';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { ManageUserService } from '../services/manage-user.service';
@@ -34,6 +34,7 @@ export class AuthenticatePage implements OnInit {
               private cookieService: CookieService,
               private router: Router,
               private managerUser: ManageUserService,
+              public alertController: AlertController,
               public toastController: ToastController) { }
 
   ngOnInit() {
@@ -68,7 +69,21 @@ export class AuthenticatePage implements OnInit {
 
         }
         else {
-          console.log(systemInformation.Error.Message);
+
+          const alertController$ = from(this.alertController.create({
+            cssClass: 'broken-product-alert',
+            header: 'توجه',
+            message: systemInformation.Error.Message,
+            buttons: [
+              {
+                text: 'تایید',
+                role: 'okay',
+              }
+            ]
+          }));
+
+          alertController$.subscribe((alertController) => alertController.present());
+
         }
 
       });
